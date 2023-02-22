@@ -1,24 +1,16 @@
 <?php
-    $alphabet = [
-        'minusc' => 'abcdefghijklmnopqrstuvwxyz',
-        'maiusc' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-        'numbers' => '1234567890',
-        'symbols' => '!"#$%&(){|}*+,-./:;<=>?@[\]^_~'
-    ];
-
-    function generatePassword($arg, $allCharacters){
+    function generatePassword($arg) {
+        $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!"#$%&(){|}*+,-./:;<=>?@[\]^_~';
         $password = [];
-        while (count($password) < $arg) {
-            foreach($allCharacters as $element){
-                $randNum = rand(0, strlen($element));
-                $password[] = $element[$randNum];
-            }
+        $alphaLength = strlen($alphabet) - 1;
+        for ($i = 0; $i < $arg; $i++) {
+            $n = rand(0, $alphaLength);
+            $password[] = $alphabet[$n];
         }
         return implode($password);
     };
-    
-    $passlength = $_GET['pass-length'];
 
+    $passlength = $_GET['pass-length'];
 ?>
 
 <!DOCTYPE html>
@@ -37,13 +29,18 @@
 
         <form action="" method="get">
             <label for="pass-length">Lunghezza Password:</label>
-            <input type="number" name="pass-length" id="pass-length" min="4" max="">
+            <input type="number" name="pass-length" id="pass-length" min="8" max="32">
             <button type="submit">Genera</button>
         </form>
+        <p>
+            <?php
+            echo $passlength
+            ?>
+        </p>
         <h3>La tua password generata è:</h3>
         <p>
             <?php
-                echo generatePassword($passlength, $alphabet);
+            echo generatePassword($passlength);
             ?>
         </p>
     </main>
